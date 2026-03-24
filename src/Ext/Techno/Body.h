@@ -6,6 +6,7 @@
 #include <New/Entity/ShieldClass.h>
 #include <New/Entity/LaserTrailClass.h>
 #include <New/Entity/AttachEffectClass.h>
+#include <Ext/Techno/GunnerWeaponSystem.h>
 
 class BulletClass;
 
@@ -103,6 +104,11 @@ public:
 		bool OnParachuted; // This is just a temporary patch. TODO: fully check HasParachuted and correct its maintenance method.
 		bool HoverShutdown;
 
+		// Gunner passenger iteration system
+		bool GunnerIteratePassengers;
+		GunnerWeaponSelectionMode GunnerWeaponSelectionMode;
+		int GunnerWeaponCriteria;
+
 		ExtData(TechnoClass* OwnerObject) : Extension<TechnoClass>(OwnerObject)
 			, TypeExtData { nullptr }
 			, Shield {}
@@ -171,6 +177,10 @@ public:
 			, JumpjetStraightAscend { false }
 			, OnParachuted { false }
 			, HoverShutdown { false }
+			// Gunner passenger iteration system
+			, GunnerIteratePassengers { false }
+			, GunnerWeaponSelectionMode { GunnerWeaponSelectionMode::First }
+			, GunnerWeaponCriteria { 0 }
 		{ }
 
 		void OnEarlyUpdate();

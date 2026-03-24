@@ -1,6 +1,7 @@
 #include "Phobos.h"
 
 #include <Drawing.h>
+#include <Ext/Techno/GunnerWeaponSystem.h>
 #include <SessionClass.h>
 #include <Unsorted.h>
 
@@ -129,6 +130,8 @@ void Phobos::ExeRun()
 	Patch::ApplyStatic();
 
 #ifdef DEBUG
+	// Run GunnerWeaponSystem tests
+	GunnerWeaponSystem::RunTests();
 
 	if (Phobos::DetachFromDebugger())
 	{

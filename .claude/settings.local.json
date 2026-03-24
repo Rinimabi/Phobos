@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(msbuild:*)",
+      "Bash(where:*)",
+      "Bash(\"C:\\\\Program Files\\\\Microsoft Visual Studio\\\\2022\\\\Community\\\\MSBuild\\\\Current\\\\Bin\\\\MSBuild.exe\" -version)",
+      "Bash(\"C:\\\\Program Files\\\\Microsoft Visual Studio\\\\2022\\\\Community\\\\MSBuild\\\\Current\\\\Bin\\\\MSBuild.exe\" Phobos.sln -p:Configuration=Release -p:Platform=Win32 -t:Rebuild -m)",
+      "Bash(\"C:\\\\Program Files\\\\Microsoft Visual Studio\\\\2022\\\\Community\\\\MSBuild\\\\Current\\\\Bin\\\\MSBuild.exe\" Phobos.sln -p:Configuration=Release -p:Platform=x86 -t:Rebuild -m)",
+      "Bash(find:*)",
+      "WebFetch(domain:phobos.readthedocs.io)",
+      "Skill(playwright-cli)",
+      "Bash(playwright-cli eval:*)",
+      "Bash(findstr:*)",
+      "Bash(dir:*)",
+      "Bash(ls:*)",
+      "Bash(git checkout:*)",
+      "Bash(git add:*)"
+    ]
+  }
+}

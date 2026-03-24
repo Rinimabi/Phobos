@@ -1066,6 +1066,10 @@ void TechnoExt::ExtData::Serialize(T& Stm)
 		.Process(this->JumpjetStraightAscend)
 		.Process(this->OnParachuted)
 		.Process(this->HoverShutdown)
+		// Gunner passenger iteration system
+		.Process(this->GunnerIteratePassengers)
+		.Process(this->GunnerWeaponSelectionMode)
+		.Process(this->GunnerWeaponCriteria)
 		;
 }
 
