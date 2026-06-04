@@ -115,6 +115,15 @@ DEFINE_HOOK(0x6F3428, TechnoClass_WhatWeaponShouldIUse_ForceWeapon, 0x6)
 		return UseWeaponIndex;
 	}
 
+	// Passenger count based weapon switching
+	const int passengerWeaponIndex = pTypeExt->SelectPassengerWeapon(pThis);
+
+	if (passengerWeaponIndex >= 0)
+	{
+		R->EAX(passengerWeaponIndex);
+		return UseWeaponIndex;
+	}
+
 	return 0;
 }
 

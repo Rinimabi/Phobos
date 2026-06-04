@@ -287,6 +287,36 @@ int TechnoTypeExt::SelectMultiWeapon(TechnoClass* const pThis, AbstractClass* co
 	return 0;
 }
 
+int TechnoTypeExt::SelectPassengerWeapon(TechnoClass* const pThis) const
+{
+	if (this->PassengerWeaponCount.empty())
+		return -1;
+
+	const auto pType = this->OwnerObject();
+
+	// Weapon indices for gattling or multi-turret gunner units are packed differently,
+	// so skip them like SelectMultiWeapon does.
+	if (pType->IsGattling || (pType->HasMultipleTurrets() && pType->Gunner))
+		return -1;
+
+	const int numPassengers = this->Passengers_BySize ? pThis->Passengers.GetTotalSize() : pThis->Passengers.NumPassengers;
+
+	if (numPassengers <= 0)
+		return -1;
+
+	// Clamp to the actual weapon count to avoid reading invalid weapon slots.
+	const int count = Math::min(static_cast<int>(this->PassengerWeaponCount.size()), pType->WeaponCount);
+
+	// Higher weapon indices take priority, so iterate from the highest threshold down.
+	for (int i = count - 1; i >= 0; --i)
+	{
+		if (numPassengers >= this->PassengerWeaponCount[i])
+			return i;
+	}
+
+	return -1;
+}
+
 // Ares 0.A source
 bool TechnoTypeExt::CameoIsVeteran(HouseClass* pHouse) const
 {
@@ -1137,6 +1167,7 @@ void TechnoTypeExt::LoadFromINIFile(CCINIClass* const pINI)
 	this->AttackMove_Follow.Read(exINI, pSection, "AttackMove.Follow");
 	this->AttackMove_Follow_IncludeAir.Read(exINI, pSection, "AttackMove.Follow.IncludeAir");
 	this->AttackMove_Follow_IfMindControlIsFull.Read(exINI, pSection, "AttackMove.Follow.IfMindControlIsFull");
+	this->PassengerWeaponCount.Read(exINI, pSection, "PassengerWeaponCount");
 
 	this->Ammo_AutoConvertMinimumAmount.Read(exINI, pSection, "Ammo.AutoConvertMinimumAmount");
 	this->Ammo_AutoConvertMaximumAmount.Read(exINI, pSection, "Ammo.AutoConvertMaximumAmount");
@@ -1769,6 +1800,7 @@ void TechnoTypeExt::Serialize(T& Stm)
 		.Process(this->AttackMove_Follow)
 		.Process(this->AttackMove_Follow_IncludeAir)
 		.Process(this->AttackMove_Follow_IfMindControlIsFull)
+		.Process(this->PassengerWeaponCount)
 
 		.Process(this->MultiWeapon)
 		.Process(this->MultiWeapon_IsSecondary)

@@ -2192,6 +2192,21 @@ MultiWeapon.IsSecondary=        ; List of integers
 MultiWeapon.SelectCount=2       ; integer
 ```
 
+### Passenger Weapon Count
+
+- Transports can now switch the weapon they use based on the number of passengers they currently carry.
+  - `PassengerWeaponCount` is a list of passenger thresholds, one per weapon index. When the current passenger count reaches the threshold of a weapon, that weapon becomes eligible.
+  - If several weapons are eligible, the one with the highest index is selected.
+  - The passenger count is determined by `Passengers.BySize`: by default (set to `true`) the total passenger size is used, while setting it to `false` counts the number of passengers instead.
+  - Entries beyond the TechnoType's `WeaponCount` are ignored.
+  - This feature does not apply to gattling or multi-turret gunner units, whose weapon indices are packed differently.
+
+In `rulesmd.ini`:
+```ini
+[SOMETECHNO]                    ; TechnoType
+PassengerWeaponCount=           ; List of integers
+```
+
 ### Multi VoiceAttack
 
 - Units can customize the attack voice that plays when using more weapons.

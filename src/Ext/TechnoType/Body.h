@@ -388,6 +388,8 @@ public:
 	Valueable<bool> AttackMove_Follow_IncludeAir;
 	Valueable<bool> AttackMove_Follow_IfMindControlIsFull;
 
+	ValueableVector<int> PassengerWeaponCount;
+
 	Valueable<bool> MultiWeapon;
 	ValueableVector<bool> MultiWeapon_IsSecondary;
 	Valueable<int> MultiWeapon_SelectCount;
@@ -780,6 +782,8 @@ public:
 		, AttackMove_Follow_IncludeAir { false }
 		, AttackMove_Follow_IfMindControlIsFull { false }
 
+		, PassengerWeaponCount {}
+
 		, MultiWeapon { false }
 		, MultiWeapon_IsSecondary {}
 		, MultiWeapon_SelectCount { 2 }
@@ -844,6 +848,7 @@ public:
 
 	int SelectForceWeapon(TechnoClass* pThis, AbstractClass* pTarget) const;
 	int SelectMultiWeapon(TechnoClass* const pThis, AbstractClass* const pTarget) const;
+	int SelectPassengerWeapon(TechnoClass* const pThis) const;
 
 	void UpdateAdditionalAttributes();
 
