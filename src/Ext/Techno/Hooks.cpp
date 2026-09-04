@@ -442,11 +442,26 @@ static bool __fastcall TechnoClass_Limbo_Wrapper(TechnoClass* pThis)
 		pExt->UpdateTintValues();
 	}
 
-	auto const coords = pThis->GetCoords();
+	// When limboing due to entering a transport, Transporter is not assigned yet
+	// (Limbo runs before the passenger is linked), so detect the entered transport
+	// from the Enter mission's radio link instead. Fall back to Transporter for
+	// units that are already inside a transport.
+	TechnoClass* pTransport = nullptr;
+	if (pThis->CurrentMission == Mission::Enter)
+		pTransport = pThis->GetNthLink();
+
+	if (pTransport == pThis)
+		pTransport = nullptr;
+
+	if (!pTransport)
+		pTransport = pThis->Transporter;
+
+	auto const coords = pTransport ? pTransport->GetCoords() : pThis->GetCoords();
+	AbstractClass* const pTarget = pTransport ? pTransport : pThis;
 
 	for (auto const& info : expireWeapons)
 	{
-		WeaponTypeExt::DetonateAt(info.Weapon, coords, info.Invoker, info.InvokerHouse, pThis);
+		WeaponTypeExt::DetonateAt(info.Weapon, coords, info.Invoker, info.InvokerHouse, pTarget);
 	}
 
 	return pThis->TechnoClass::Limbo();
