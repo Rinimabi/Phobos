@@ -185,6 +185,27 @@ int TechnoTypeExt::SelectMultiWeapon(TechnoClass* const pThis, AbstractClass* co
 	const int weaponCount = Math::min(pType->WeaponCount, this->MultiWeapon_SelectCount);
 	const bool noSecondary = this->NoSecondaryWeaponFallback;
 
+	// Sequential multi-weapon (Phobos): cycle through the weapons that can fire at the
+	// current target, in slot order, starting from this instance's weapon cursor. Weapons
+	// that cannot fire at the target are skipped and do not consume a turn. The cursor is
+	// advanced by the caller after a volley actually fires, so repeated SelectWeapon calls
+	// during the same attack always return the same weapon.
+	if (this->MultiWeapon_SequentialFire)
+	{
+		const bool isElite = pThis->Veterancy.IsElite();
+		const int cursor = weaponCount > 0 ? TechnoExt::Fetch(pThis)->SequentialWeaponIndex % weaponCount : 0;
+
+		for (int offset = 0; offset < weaponCount; ++offset)
+		{
+			const int index = (cursor + offset) % weaponCount;
+
+			if (TechnoExt::MultiWeaponCanFire(pThis, pTarget, TechnoTypeExt::GetWeaponType(pType, index, isElite)))
+				return index;
+		}
+
+		return -1; // No weapon in the cycle can fire at this target; let vanilla handle it.
+	}
+
 	if (weaponCount < 2)
 		return 0;
 	else if (weaponCount == 2 && !noSecondary)
@@ -1786,6 +1807,7 @@ void TechnoTypeExt::Serialize(T& Stm)
 		.Process(this->AttackMove_Follow_IfMindControlIsFull)
 
 		.Process(this->MultiWeapon)
+		.Process(this->MultiWeapon_SequentialFire)
 		.Process(this->MultiWeapon_IsSecondary)
 		.Process(this->MultiWeapon_SelectCount)
 		.Process(this->ReadMultiWeapon)

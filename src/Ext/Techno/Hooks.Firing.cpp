@@ -899,6 +899,20 @@ DEFINE_HOOK(0x6FF660, TechnoClass_FireAt_LateLogic, 0x6)
 		pThis->CurrentBurstIndex = 0;
 	}
 
+	// MultiWeapon.SequentialFire: advance the weapon cursor once a volley actually completes.
+	// CurrentBurstIndex wraps back to 0 after the last shot of a burst, so this runs exactly
+	// once per volley (once for single-shot weapons, once per full burst for burst weapons).
+	// Only advance when the weapon that fired is part of the sequential cycle and the feature
+	// is actually in use; a weapon forced outside the cycle (e.g. ForceWeapon) leaves the
+	// cursor untouched.
+	if (pExt->TypeExtData->MultiWeapon.Get() && pExt->TypeExtData->MultiWeapon_SequentialFire.Get())
+	{
+		const int weaponCount = Math::min(pThis->GetTechnoType()->WeaponCount, pExt->TypeExtData->MultiWeapon_SelectCount);
+
+		if (pThis->CurrentBurstIndex == 0 && weaponCount > 0 && weaponIndex >= 0 && weaponIndex < weaponCount)
+			pExt->SequentialWeaponIndex = (weaponIndex + 1) % weaponCount;
+	}
+
 	return 0;
 }
 

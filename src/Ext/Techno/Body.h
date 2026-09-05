@@ -61,6 +61,8 @@ public:
 	CDTimerClass DelayedFireTimer;
 	AnimClass* CurrentDelayedFireAnim;
 
+	int SequentialWeaponIndex; // Cursor for MultiWeapon.SequentialFire, advanced after a volley actually fires. Not serialized.
+
 	AirstrikeClass* AirstrikeTargetingMe;
 
 	bool IsSelected;
@@ -119,6 +121,7 @@ public:
 		, DelayedFireWeaponIndex { -1 }
 		, DelayedFireTimer {}
 		, CurrentDelayedFireAnim { nullptr }
+		, SequentialWeaponIndex { 0 }
 		, AttachedEffectInvokerCount { 0 }
 		, IsSelected { false }
 		, TintColorOwner { 0 }

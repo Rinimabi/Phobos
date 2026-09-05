@@ -35,6 +35,7 @@ DEFINE_HOOK(0x7128B2, TechnoTypeClass_ReadINI_MultiWeapon, 0x6)
 	if (pTypeExt->MultiWeapon.Get())
 	{
 		pTypeExt->MultiWeapon_SelectCount.Read(exINI, pSection, "MultiWeapon.SelectCount");
+		pTypeExt->MultiWeapon_SequentialFire.Read(exINI, pSection, "MultiWeapon.SequentialFire");
 
 		const int weaponCount = pThis->WeaponCount;
 

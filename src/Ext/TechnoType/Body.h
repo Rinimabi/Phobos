@@ -385,6 +385,7 @@ public:
 	Valueable<bool> AttackMove_Follow_IfMindControlIsFull;
 
 	Valueable<bool> MultiWeapon;
+	Valueable<bool> MultiWeapon_SequentialFire;
 	ValueableVector<bool> MultiWeapon_IsSecondary;
 	Valueable<int> MultiWeapon_SelectCount;
 	bool ReadMultiWeapon;
@@ -800,6 +801,7 @@ public:
 		, AttackMove_Follow_IfMindControlIsFull { false }
 
 		, MultiWeapon { false }
+		, MultiWeapon_SequentialFire { false }
 		, MultiWeapon_IsSecondary {}
 		, MultiWeapon_SelectCount { 2 }
 		, ReadMultiWeapon { false }

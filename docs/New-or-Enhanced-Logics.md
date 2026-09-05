@@ -2324,6 +2324,11 @@ MindControlSize=1                     ; integer
   - `MultiWeapon.SelectCount` determines the number of weapons that can be selected by default weapon selection logic. Notice that higher number is bad for performance.
     - If the number is smaller than the total amount of weapons, the ones with smaller indices will be picked.
     - Other weapons can still be used for logic that specify a weapon index, such as [ForceWeapon](#forcing-specific-weapon-against-certain-targets).
+  - `MultiWeapon.SequentialFire` makes the unit fire its weapons **in slot order, one weapon per volley, cycling** instead of always picking the best-fitting weapon for the target.
+    - On each volley the unit walks the weapon list in slot order, starting from a per-unit cursor, and fires the first weapon that can actually hit the current target. Weapons that cannot fire at the target are skipped and do not consume a turn.
+    - If no weapon in the cycle can fire at the target, the unit falls back to normal weapon selection (it simply cannot use its sequential weapons against that target).
+    - The cursor only advances after a volley actually fires, so a weapon with `Burst` fires its whole burst before the next weapon is selected. The cursor is per-unit runtime state: if the unit dies or is recreated it resets to `Weapon1`.
+    - This allows, for example, three weapons that target ground, naval and air respectively to each take their turn when attacking enemies of the matching type, while weapons that cannot hit the current target stay inactive.
 
 In `rulesmd.ini`:
 ```ini
@@ -2331,6 +2336,7 @@ In `rulesmd.ini`:
 MultiWeapon=false               ; boolean
 MultiWeapon.IsSecondary=        ; List of integers
 MultiWeapon.SelectCount=2       ; integer
+MultiWeapon.SequentialFire=false ; boolean
 ```
 
 ### Multi VoiceAttack
