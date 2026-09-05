@@ -3104,6 +3104,23 @@ DamageTargetHealthMultiplier=0.0                           ; floating point valu
 `DamageAlliesMultiplier` won't affect your own units like `AffectsAllies` did.
 ```
 
+### Deployed infantry damage multiplier
+
+- Infantry that is deployed (`Deployer=yes` / `Deployed`, e.g. deployed GIs or a deployed troop) normally takes full damage like when standing. This logic extends the existing `Damage.Deployed` warhead tag (provided by Ares) so that it can also be configured on the **global** and **infantry type** level, letting you define a percentage of incoming damage a deployed infantry takes.
+  - `0.0` means it takes no damage while deployed; `0.5` means it takes half damage; `1.0` (default) means it takes the same damage as standing, matching vanilla behavior.
+  - The multiplier applies to **regular, defense-respecting** damage. Damage that ignores defenses (`IgnoreDefenses`, e.g. `Suicide` / C4) is **not** affected, so the multiplier is skipped there. This mirrors the existing `ProneDamage` handling.
+  - The effective value is resolved with the following precedence: **infantry type (`[InfantryType]`)** → **global default (`[CombatDamage]`)**. Each layer falls back to the next if it is not set.
+  - The **warhead** level remains Ares' `Damage.Deployed`, which is applied separately by Ares and still multiplies on top. This lets the three levels compose without conflicting.
+
+In `rulesmd.ini`:
+```ini
+[CombatDamage]                                        ; global default
+Damage.Deployed=1.0                                    ; floating point value, percentage of incoming damage taken while deployed
+
+[SOMEINFANTRY]                                        ; InfantryType, overrides the global default
+Damage.Deployed=                                      ; floating point value, default to [CombatDamage] -> Damage.Deployed
+```
+
 ### Damage technos underground
 
 - Now you can make the warhead damage technos underground!

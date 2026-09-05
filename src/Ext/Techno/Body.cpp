@@ -3,6 +3,8 @@
 #include <Ext/Building/Body.h>
 #include <Ext/House/Body.h>
 #include <Ext/Infantry/Body.h>
+#include <Ext/InfantryType/Body.h>
+#include <Ext/Rules/Body.h>
 #include <Ext/Unit/Body.h>
 #include <Ext/Scenario/Body.h>
 #include <Ext/WeaponType/Body.h>
@@ -239,6 +241,28 @@ double TechnoExt::GetCurrentArmorMultiplier(TechnoClass* pThis, TechnoTypeClass*
 {
 	return pThis->ArmorMultiplier * pThis->Owner->GetArmorMultiplier(pType) * TechnoExt::CalculateArmorMultipliers(pThis, pWarhead, pSourceHouse) *
 		(pThis->HasAbility(Ability::Stronger) ? RulesClass::Instance->VeteranArmor : 1.0);
+}
+
+double TechnoExt::GetDeployedInfantryDamageMultiplier(TechnoClass* pThis)
+{
+	if (!pThis)
+		return 1.0;
+
+	// Only deployed infantry are affected by this multiplier.
+	const auto pInfantry = abstract_cast<InfantryClass*, true>(pThis);
+	if (!pInfantry || !pInfantry->IsDeployed())
+		return 1.0;
+
+	// Precedence: infantry type (unit) > global default.
+	// The warhead-level value is Ares' Damage.Deployed and is applied by Ares itself,
+	// so it is not handled here to avoid double-applying it.
+	if (const auto pTypeExt = InfantryTypeExt::TryFetch(pInfantry->Type))
+	{
+		if (pTypeExt->Damage_Deployed.isset())
+			return pTypeExt->Damage_Deployed.Get();
+	}
+
+	return RulesExt::Global()->Damage_Deployed;
 }
 
 CoordStruct TechnoExt::PassengerKickOutLocation(TechnoClass* pThis, FootClass* pPassenger, int maxAttempts = 1)

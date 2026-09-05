@@ -2356,7 +2356,7 @@ int WarpPerStep::TemporalClassFake::_GetWarpPerStep(int helperCount)
 					if (const auto pTargetInfantry = abstract_cast<InfantryClass*, true>(pTarget))
 					{
 						if (pTargetInfantry->IsDeployed())
-							multiplier *= pWHExt->Damage_Deployed;
+							multiplier *= pWHExt->Damage_Deployed * TechnoExt::GetDeployedInfantryDamageMultiplier(pTarget);
 						else if (pTargetInfantry->Crawling)
 							multiplier *= pWarhead->ProneDamage;
 					}

@@ -329,6 +329,8 @@ public:
 		Valueable<double> ProneSpeed_Crawls;
 		Valueable<double> ProneSpeed_NoCrawls;
 
+		Valueable<double> Damage_Deployed;
+
 		Valueable<double> DamagedSpeed;
 
 		Valueable<bool> HarvesterScanAfterUnload;
@@ -830,6 +832,8 @@ public:
 			, BuildingTypeSelectable { false }
 			, ProneSpeed_Crawls { 0.67 }
 			, ProneSpeed_NoCrawls { 1.5 }
+
+			, Damage_Deployed { 1.0 }
 
 			, DamagedSpeed { 0.75 }
 

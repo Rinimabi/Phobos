@@ -74,6 +74,11 @@ DEFINE_HOOK(0x701900, TechnoClass_ReceiveDamage_Shield, 0x6)
 		if (pWHExt->DamageTargetHealthMultiplier)
 			multiplier += pWHExt->DamageTargetHealthMultiplier * pThis->GetHealthPercentage();
 
+		// Deployed infantry take a configurable percentage of incoming damage (Phobos).
+		// Precedence: InfantryType > global default. The warhead-level value is Ares' Damage.Deployed,
+		// which is applied separately and not handled here to avoid double-applying it.
+		multiplier *= TechnoExt::GetDeployedInfantryDamageMultiplier(pThis);
+
 		if (multiplier != 1.0)
 		{
 			const auto sgnDamage = damage > 0 ? 1 : -1;

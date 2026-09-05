@@ -20,6 +20,7 @@ void InfantryTypeExt::LoadFromINIFile(CCINIClass* const pINI)
 	this->NotHuman_RandomDeathSequence.Read(exINI, pSection, "NotHuman.RandomDeathSequence");
 	this->DefaultDisguise.Read(exINI, pSection, "DefaultDisguise");
 	this->ProneSpeed.Read(exINI, pSection, "ProneSpeed");
+	this->Damage_Deployed.Read(exINI, pSection, "Damage.Deployed");
 	this->InfantryAutoDeploy.Read(exINI, pSection, "InfantryAutoDeploy");
 
 	const auto pArtINI = &CCINIClass::INI_Art;
@@ -64,6 +65,7 @@ void InfantryTypeExt::Serialize(T& Stm)
 		.Process(this->NotHuman_RandomDeathSequence)
 		.Process(this->DefaultDisguise)
 		.Process(this->ProneSpeed)
+		.Process(this->Damage_Deployed)
 		.Process(this->OnlyUseLandSequences)
 		.Process(this->SecondaryFireSequenceLandOnly)
 		.Process(this->PronePrimaryFireFLH)

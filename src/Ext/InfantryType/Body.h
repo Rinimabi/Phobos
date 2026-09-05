@@ -16,6 +16,7 @@ public:
 	Nullable<bool> NotHuman_RandomDeathSequence;
 	Valueable<InfantryTypeClass*> DefaultDisguise;
 	Nullable<double> ProneSpeed;
+	Nullable<double> Damage_Deployed;
 	Nullable<bool> OnlyUseLandSequences;
 	Nullable<bool> SecondaryFireSequenceLandOnly;
 	Nullable<CoordStruct> PronePrimaryFireFLH;
@@ -40,6 +41,7 @@ public:
 		, NotHuman_RandomDeathSequence {}
 		, DefaultDisguise {}
 		, ProneSpeed {}
+		, Damage_Deployed {}
 		, OnlyUseLandSequences {}
 		, SecondaryFireSequenceLandOnly {}
 		, PronePrimaryFireFLH {}
